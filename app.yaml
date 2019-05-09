@@ -3,7 +3,7 @@ kind: KfDef
 metadata:
   creationTimestamp: null
   name: kfapp
-  namespace: kubeflow
+  namespace: <namespace>
 spec:
   appdir: /home/iguazio/kfapp
   components:
