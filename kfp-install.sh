@@ -4,6 +4,7 @@
 # set kubeflow vars
 export KFVER=0.5.0
 export KFAPP=$(pwd)/kfapp
+export KFNAMESPACE=kubeflow
 
 # create PVC for minio, mysql
 sudo mkdir /mnt/pv1
@@ -34,15 +35,24 @@ cd ${KFAPP}
 
 # REPLACE app.yaml with the one below !!! (remove unwanted kubeflow components)
 curl -OL https://raw.githubusercontent.com/v3io/kftools/master/app.yaml
+sed -i "s/<namespace>/${KFNAMESPACE}/g" app.yaml
 
 # install
 kfctl generate k8s -V
 kfctl apply k8s -V
 
 # expose pipeline ui as NodePort
-kubectl -n kubeflow patch service/ml-pipeline-ui -p '{"spec":{"ports": [{"nodePort": 30086,"port": 80,"protocol": "TCP","targetPort": 3000}],"type": "NodePort"}}' -o yaml
+if [[ -z "${KFNODEPORT}"] ]; then
+    kubectl -n kubeflow patch service/ml-pipeline-ui -o yaml -p {"spec":{"ports":[{"nodePort":${KFNODEPORT},"port":80,"protocol":"TCP","targetPort":3000}],"type":"NodePort"}}
+fi
 
 kubectl -n kubeflow get  all
+
+if [[ -z "${IGZDOMAIN}"] ]; then
+    curl -OL https://raw.githubusercontent.com/v3io/kftools/master/ing.yaml
+    sed -i "s/<namespace>/${KFNAMESPACE}/g; s/<domain>/${IGZDOMAIN}/g" ing.yaml
+    kubectl create -f ing.yaml
+fi
 
 # optional expose minio service
 # kubectl -n kubeflow patch service/minio-service -p '{"spec":{"type":"NodePort"}}' -o yaml
