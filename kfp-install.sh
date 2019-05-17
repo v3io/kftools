@@ -41,17 +41,17 @@ sed -i "s/<namespace>/${KFNAMESPACE}/g" app.yaml
 kfctl generate k8s -V
 kfctl apply k8s -V
 
-# expose pipeline ui as NodePort
-if [[ -z "${KFNODEPORT}"] ]; then
-    kubectl -n kubeflow patch service/ml-pipeline-ui -o yaml -p {"spec":{"ports":[{"nodePort":${KFNODEPORT},"port":80,"protocol":"TCP","targetPort":3000}],"type":"NodePort"}}
-fi
-
 kubectl -n kubeflow get  all
 
 if [[ -z "${IGZDOMAIN}"] ]; then
     curl -OL https://raw.githubusercontent.com/v3io/kftools/master/ing.yaml
     sed -i "s/<namespace>/${KFNAMESPACE}/g; s/<domain>/${IGZDOMAIN}/g" ing.yaml
     kubectl create -f ing.yaml
+fi
+
+# expose pipeline ui as NodePort
+if [[ -z "${KFNODEPORT}"] ]; then
+    kubectl -n kubeflow patch service/ml-pipeline-ui -o yaml -p {"spec":{"ports":[{"nodePort":${KFNODEPORT},"port":80,"protocol":"TCP","targetPort":3000}],"type":"NodePort"}}
 fi
 
 # optional expose minio service
