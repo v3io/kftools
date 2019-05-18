@@ -43,14 +43,14 @@ kfctl apply k8s -V
 
 kubectl -n kubeflow get  all
 
-if [[ -z "${IGZDOMAIN}"] ]; then
+if [[ -v IGZDOMAIN ]]; then
     curl -OL https://raw.githubusercontent.com/v3io/kftools/master/ing.yaml
     sed -i "s/<namespace>/${KFNAMESPACE}/g; s/<domain>/${IGZDOMAIN}/g" ing.yaml
     kubectl create -f ing.yaml
 fi
 
 # expose pipeline ui as NodePort
-if [[ -z "${KFNODEPORT}"] ]; then
+if [[ -v KFNODEPORT ]]; then
     kubectl -n kubeflow patch service/ml-pipeline-ui -o yaml -p {"spec":{"ports":[{"nodePort":${KFNODEPORT},"port":80,"protocol":"TCP","targetPort":3000}],"type":"NodePort"}}
 fi
 
