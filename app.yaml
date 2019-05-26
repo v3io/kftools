@@ -5,7 +5,7 @@ metadata:
   name: kfapp
   namespace: <namespace>
 spec:
-  appdir: /home/iguazio/kfapp
+  appdir: ~/kfapp
   components:
   - argo
   - pipeline
@@ -14,7 +14,7 @@ spec:
   - common
   - examples
   - pipeline
-  repo: /home/iguazio/kfapp/.cache/master/kubeflow
+  repo: ~/kfapp/.cache/master/kubeflow
   useBasicAuth: false
   useIstio: false
   version: master
