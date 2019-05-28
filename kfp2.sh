@@ -1,4 +1,4 @@
-
+#!/usr/bin/env bash
 
 sudo mkdir /mnt/pv1
 sudo mkdir /mnt/pv2
