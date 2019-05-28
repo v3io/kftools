@@ -657,7 +657,17 @@ spec:
       - env:
         - name: MINIO_NAMESPACE
           value: <namespace>
-        image: gcr.io/ml-pipeline/frontend:0.1.20
+        - name: MINIO_PORT
+          value: 9000
+        - name: MINIO_HOST
+          value: minio-service
+        - name: MINIO_ACCESS_KEY
+          value: minio
+        - name: HTTP_AUTHORIZATION_KEY
+          value: X-v3io-session-key
+        - name: HTTP_AUTHORIZATION_DEFAULT_VALUE
+          value: <accesskey>
+        image: quay.io/iguazio/ml-pipelines-frontend
         imagePullPolicy: IfNotPresent
         name: ml-pipeline-ui
         ports:
@@ -825,28 +835,3 @@ spec:
   resources:
     requests:
       storage: 20Gi
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/proxy-body-size: "0"
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    nginx.ingress.kubernetes.io/rewrite-target: "/"
-  name: pipelines
-  namespace: <namespace>
-spec:
-  rules:
-  - host: pipelines.default-tenant.app.<domain>
-    http:
-      paths:
-      - backend:
-          serviceName: ml-pipeline-ui
-          servicePort: 80
-        path: /
-  tls:
-  - hosts:
-    - pipelines.default-tenant.app.<domain>
-    secretName: ingress-tls
