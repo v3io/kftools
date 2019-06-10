@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 
-sudo mkdir /mnt/pv1
-sudo mkdir /mnt/pv2
-sudo mkdir /mnt/pv3
+mkdir -p /tmp/mnt/pv1 /tmp/mnt/pv2
 
 # run this to create PVs
 kubectl create -f https://raw.githubusercontent.com/v3io/kftools/master/add-pv.yaml
 
 export KFNAMESPACE=default-tenant
 export IGZDOMAIN=yaronh6.iguazio-cd2.com
+export IGZ_ACCESS_KEY=<access-key>
 
 curl -OL https://raw.githubusercontent.com/v3io/kftools/master/full-install.yaml
 sed -i "s/<namespace>/${KFNAMESPACE}/g" full-install.yaml
