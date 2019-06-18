@@ -107,7 +107,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mpi-operator
-  namespace: mpi-operator
+  namespace: default-tenant
   labels:
     app: mpi-operator
 spec:
