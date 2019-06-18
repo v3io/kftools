@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: my-ml-pipeline-
+spec:
+  arguments:
+    parameters:
+    - name: txt
+      value: param1
+    - name: val
+      value: '7'
+  entrypoint: my-ml-pipeline
+  serviceAccountName: pipeline-runner
+  templates:
+  - container:
+      command:
+      - echo
+      - ''
+      image: alpine:3.6
+    name: data-prep
+    outputs:
+      artifacts:
+      - name: mlpipeline-ui-metadata
+        optional: true
+        path: /mlpipeline-ui-metadata.json
+      - name: mlpipeline-metrics
+        optional: true
+        path: /mlpipeline-metrics.json
+  - dag:
+      tasks:
+      - name: data-prep
+        template: data-prep
+      - dependencies:
+        - data-prep
+        name: training
+        template: training
+    name: my-ml-pipeline
+  - container:
+      command:
+      - echo
+      - ''
+      image: alpine:3.6
+    name: training
+    outputs:
+      artifacts:
+      - name: mlpipeline-ui-metadata
+        optional: true
+        path: /mlpipeline-ui-metadata.json
+      - name: mlpipeline-metrics
+        optional: true
+        path: /mlpipeline-metrics.json
