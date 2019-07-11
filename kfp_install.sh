@@ -6,7 +6,7 @@ mkdir -p /tmp/mnt/pv1 /tmp/mnt/pv2
 kubectl create -f https://raw.githubusercontent.com/v3io/kftools/master/add-pv.yaml
 
 export KFNAMESPACE=default-tenant
-export IGZDOMAIN=y<domain>
+export IGZDOMAIN=<domain>
 export IGZ_ACCESS_KEY=<access-key>
 
 curl -OL https://raw.githubusercontent.com/v3io/kftools/master/full-install.yaml
