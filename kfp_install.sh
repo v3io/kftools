@@ -6,7 +6,7 @@ mkdir -p /tmp/mnt/pv1 /tmp/mnt/pv2
 kubectl create -f https://raw.githubusercontent.com/v3io/kftools/master/add-pv.yaml
 
 export KFNAMESPACE=default-tenant
-export IGZDOMAIN=yaronh6.iguazio-cd2.com
+export IGZDOMAIN=<domain>
 export IGZ_ACCESS_KEY=<access-key>
 
 curl -OL https://raw.githubusercontent.com/v3io/kftools/master/full-install.yaml
@@ -22,5 +22,9 @@ if [[ -v IGZDOMAIN ]]; then
     curl -OL https://raw.githubusercontent.com/v3io/kftools/master/ing.yaml
     sed -i "s/<namespace>/${KFNAMESPACE}/g; s/<domain>/${IGZDOMAIN}/g" ing.yaml
     kubectl create -f ing.yaml
+
+    curl -OL https://raw.githubusercontent.com/v3io/kftools/master/ing_old.yaml
+    sed -i "s/<namespace>/${KFNAMESPACE}/g; s/<domain>/${IGZDOMAIN}/g" ing_old.yaml
+    kubectl create -f ing_old.yaml
 fi
 
