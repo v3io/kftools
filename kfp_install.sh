@@ -22,5 +22,9 @@ if [[ -v IGZDOMAIN ]]; then
     curl -OL https://raw.githubusercontent.com/v3io/kftools/master/ing.yaml
     sed -i "s/<namespace>/${KFNAMESPACE}/g; s/<domain>/${IGZDOMAIN}/g" ing.yaml
     kubectl create -f ing.yaml
+
+    curl -OL https://raw.githubusercontent.com/v3io/kftools/master/ing_old.yaml
+    sed -i "s/<namespace>/${KFNAMESPACE}/g; s/<domain>/${IGZDOMAIN}/g" ing_old.yaml
+    kubectl create -f ing_old.yaml
 fi
 
