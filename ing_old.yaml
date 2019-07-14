@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     nginx.ingress.kubernetes.io/rewrite-target: "/"
-  name: pipelines_old
+  name: pipelines-old
   namespace: <namespace>
 spec:
   rules:
